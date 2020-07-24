@@ -11,4 +11,4 @@ Works differently depending on the browser.
 
 Examples:<br/>
 **openexplorer:C:\users\youruser\desktop**<br/>
-**openexplorer:\\server\serverfolder**
+**openexplorer:\\\\server\serverfolder**
