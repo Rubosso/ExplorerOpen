@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="ExplorerOpenSetup" Language="1033" Version="1.0.0.0" Manufacturer="Ruben Serrano" UpgradeCode="ece8c229-7898-4948-a90f-4e1364222e7f">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" InstallPrivileges="elevated"/>
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of ExplorerOpen is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="ExplorerOpenSetup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="ExplorerOpen" />
+      </Directory>
+    </Directory>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UI>
+      <UIRef Id="WixUI_InstallDir" />
+      <!-- Skip license dialog -->
+      <Publish Dialog="WelcomeDlg"
+               Control="Next"
+               Event="NewDialog"
+               Value="InstallDirDlg"
+               Order="2">1</Publish>
+      <Publish Dialog="InstallDirDlg"
+               Control="Back"
+               Event="NewDialog"
+               Value="WelcomeDlg"
+               Order="2">1</Publish>
+    </UI>
+  </Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+		  <Component Id="ProductComponent"> 
+        <File Source="$(var.ExplorerOpen.TargetPath)" />
+		  </Component>
+      <Component Id="RegistryEntries" Guid="*">
+        <RegistryKey Root="HKCR"  Key="openexplorer"  Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Name="URL Protocol" Value="" KeyPath="yes"/>
+          <RegistryValue Type="string" Value=""/>
+        </RegistryKey>
+        <RegistryKey Root="HKCR"  Key="openexplorer\shell\open\command"  Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Value='"[INSTALLFOLDER]ExplorerOpen.exe" "%1"'/>
+        </RegistryKey>
+        <RegistryKey Root="HKLM"  Key="SOFTWARE\Policies\Google\Chrome\URLWhitelist"  Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Name="20" Value='openexplorer:*'/>
+        </RegistryKey>
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
