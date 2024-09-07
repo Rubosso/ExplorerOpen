@@ -1,7 +1,10 @@
 # ExplorerOpen
 
 This is a simple program I made out of necessity to use for a project I was involved in.
-It adds an executable and some registry keys so that you can call the program from a custom browser protocol.
+
+It allows you to open a windows explorer window in a predetermined path by clicking on a link.
+
+It works by installing an executable to open the explorer and some registry keys so that you can call the program from a custom browser protocol.
 Windows only.
 
 Syntax:<br/>
